@@ -28,7 +28,9 @@ namespace DecisionTech.ShoppingBasket.UnitTests
             var basket = new Basket();
             var checkout = new DiscountableCheckoutService(
                 new CheckoutService(),
-                new[] { new PercentageDiscountCalculator(0.5, Enumerable.Repeat(TestData.Butter, 2), TestData.Bread), });
+                new[] { 
+                    new PercentageDiscountCalculator(0.5, Enumerable.Repeat(TestData.Butter, 2), TestData.Bread), 
+                });
 
             basket.Add(TestData.Butter);
             basket.Add(TestData.Butter);
@@ -37,6 +39,25 @@ namespace DecisionTech.ShoppingBasket.UnitTests
             basket.Add(TestData.Bread);
 
             Assert.Equal(3.10m, checkout.CalculateTotal(basket));
+        }
+
+        [Fact]
+        public void Scenario3()
+        {
+            var basket = new Basket();
+            var checkout = new DiscountableCheckoutService(
+                new CheckoutService(),
+                new[] {
+                    new PercentageDiscountCalculator(0.5, Enumerable.Repeat(TestData.Butter, 2), TestData.Bread),
+                    new PercentageDiscountCalculator(1.0, Enumerable.Repeat(TestData.Milk, 3), TestData.Milk),
+                });
+
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+
+            Assert.Equal(3.45m, checkout.CalculateTotal(basket));
         }
     }
 }

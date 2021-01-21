@@ -15,8 +15,6 @@ namespace DecisionTech.ShoppingBasket.Services
             _requirements = requirements?.ToList() ?? throw new ArgumentNullException(nameof(requirements));
             _product = product ?? throw new ArgumentNullException(nameof(product));
             _percentage = p;
-
-            _requirements.Add(product);
         }
 
         public decimal CalculateDiscount(Basket basket)
@@ -27,9 +25,11 @@ namespace DecisionTech.ShoppingBasket.Services
             foreach (var item in basket)
                 requires.Remove(item);
 
-            return !requires.Any()
+            var discount = !requires.Any()
                  ? _product.Cost * (decimal)_percentage
                  : 0.0m;
+
+            return discount;
         }
     }
 }
