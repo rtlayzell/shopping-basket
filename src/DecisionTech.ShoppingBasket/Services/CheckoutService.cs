@@ -6,7 +6,7 @@ namespace DecisionTech.ShoppingBasket.Services
     {
         public decimal CalculateTotal(Basket basket)
         {
-            return basket.Select(x => x.Cost).Sum();
+            return basket.Sum(x => x.Cost);
         }
     }
 }
