@@ -29,7 +29,7 @@ namespace DecisionTech.ShoppingBasket.UnitTests
             var checkout = new DiscountableCheckoutService(
                 new CheckoutService(),
                 new[] { 
-                    new PercentageDiscountCalculator(0.5, Enumerable.Repeat(TestData.Butter, 2), TestData.Bread), 
+                    new PercentageDiscountCalculator(0.5, TestData.Bread, Enumerable.Repeat(TestData.Butter, 2)), 
                 });
 
             basket.Add(TestData.Butter);
@@ -48,8 +48,8 @@ namespace DecisionTech.ShoppingBasket.UnitTests
             var checkout = new DiscountableCheckoutService(
                 new CheckoutService(),
                 new[] {
-                    new PercentageDiscountCalculator(0.5, Enumerable.Repeat(TestData.Butter, 2), TestData.Bread),
-                    new PercentageDiscountCalculator(1.0, Enumerable.Repeat(TestData.Milk, 3), TestData.Milk),
+                    new PercentageDiscountCalculator(0.5, TestData.Bread, Enumerable.Repeat(TestData.Butter, 2)),
+                    new PercentageDiscountCalculator(1.0, TestData.Milk, Enumerable.Repeat(TestData.Milk, 3)),
                 });
 
             basket.Add(TestData.Milk);
@@ -58,6 +58,35 @@ namespace DecisionTech.ShoppingBasket.UnitTests
             basket.Add(TestData.Milk);
 
             Assert.Equal(3.45m, checkout.CalculateTotal(basket));
+        }
+
+
+        [Fact]
+        public void Scenario4()
+        {
+            var basket = new Basket();
+            var checkout = new DiscountableCheckoutService(
+                new CheckoutService(),
+                new[] {
+                    new PercentageDiscountCalculator(0.5, TestData.Bread, Enumerable.Repeat(TestData.Butter, 2)),
+                    new PercentageDiscountCalculator(1.0, TestData.Milk, Enumerable.Repeat(TestData.Milk, 3)),
+                });
+
+            basket.Add(TestData.Butter);
+            basket.Add(TestData.Butter);
+
+            basket.Add(TestData.Bread);
+
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+            basket.Add(TestData.Milk);
+
+            Assert.Equal(9.00m, checkout.CalculateTotal(basket));
         }
     }
 }
